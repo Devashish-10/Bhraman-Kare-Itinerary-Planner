@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels Search</title>
+</head>
+<body>
+    <style>body{
+        font-family: sans-serif;
+    }
+    header{
+        background-color: #f0f0f0;
+    }
+    h1{
+        text-align: center;
+    }
+    form{
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+    label{
+        display: block;
+        margin-bottom: 5px;
+    }
+    label{
+        display: block;
+        margin-bottom: 5px;
+    }
+    input{
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+    button{
+        display: block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }</style>
+    <form id="hotel-form">
+    <label for="location">City Name</label><br>
+    <input type="text" name="location" id="location">
+    <button id="submit">Find</button>  
+    </form>
+    <div id="hotel-report"></div>
+    <script src ="hotel.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uttarakhand Best Travel Places</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        #map {
+            height: 1080px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script>
+        const center = [30.11, 78.38];
+        const zoom = 10;
+        const map = L.map('map').setView(center, zoom);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        const destinations = [
+            {
+                lat: 30.09,
+                lng: 79.91,
+                name: "Mussoorie",
+                description: "A charming hill station known for its scenic beauty."
+            },
+            {
+                lat: 30.34,
+                lng: 79.57,
+                name: "Rishikesh",
+                description: 'The "Yoga Capital of the World" with adventure activities and spiritual vibes.'
+            },
+            {
+                lat: 30.53,
+                lng: 79.63,
+                name: "Haridwar",
+                description: "One of the seven holy Hindu cities with vibrant ghats and temples."
+            },
+            {
+                lat: 29.5,
+                lng: 78.95,
+                name: "Jim Corbett National Park",
+                description: "Home to diverse wildlife, including tigers and elephants."
+            },
+            {
+                lat: 30.12,
+                lng: 79.43,
+                name: "Nainital",
+                description: "A picturesque lake town surrounded by hills and known for its colonial charm."
+            },
+            {
+                lat: 30.24,
+                lng: 79.06,
+                name: "Auli",
+                description: "A scenic hill station and skiing destination with breathtaking views."
+            },
+            {
+                lat: 30.75,
+                lng: 79.19,
+                name: "Kedarnath",
+                description: "A sacred Hindu pilgrimage site and one of the Char Dham Yatra destinations."
+            },
+            {
+              lat:30.73,
+              lng:79.49,
+              name:"Badrinath",
+              description:"A sacred Hindu pilgrimage site and one of the the Char Dham Yatra destinations famous for Badrinath Temple. "
+            },
+            {
+              lat:30.97,
+              lng:78.92,
+              name:"Gangotri",
+              description:" The source of the Ganga River and an important pilgrimage site."
+            },
+            {
+              lat:30.68,
+              lng:78.44,
+              name:"Yamunotri",
+              description:" The source of the Yamuna River and an important pilgrimage site."
+            },
+            {
+              lat:29.38,
+              lng:79.38,
+              name:"Pangot",
+              description:"A quiet hamlet near Nainital, known for bird watching and surrounded by thick forests"
+            },
+            {
+              lat:29.66,
+              lng:79.77,
+              name:"Binsar",
+              description:"A serene wildlife sanctuary with stunning views of the Himalayas."
+            },
+            {
+              lat:29.47,
+              lng:79.77,
+              name:"Muktkeshwar",
+              description:"A small town known for its colonial architecture and the Mukteshwar Temple."
+            },
+            {
+              lat:30.40,
+              lng:79.17,
+              name:"Chopta",
+              description:" A base for trekking to Tungnath, the highest Shiva temple in the world."
+            },
+            {
+              lat:30.54,
+              lng:79.63,
+              name:"Hemkund Sahib",
+              description:"A Sikh pilgrimage site located near the Valley of Flowers."
+            },
+            {
+              lat:29.58,
+              lng:80.21,
+              name:"Pithoragarh",
+              description:"A town surrounded by snow-capped peaks, known for its natural beauty."
+            },
+            {
+              lat:29.61,
+              lng:79.65,
+              name:"Almora",
+              description:" A cultural hub with ancient temples and vibrant markets."
+            },
+            {
+              lat:29.84,
+              lng:80.05,
+              name:"Chaukori",
+              description:"A lesser-known gem with panoramic views of the Himalayas and tea gardens."
+            },
+            ];
+
+        for (const destination of destinations) {
+            const marker = L.marker([destination.lat, destination.lng]);
+            marker.bindPopup(`<h3>${destination.name}</h3><p>${destination.description}</p><img src="images/${destination.name}.jpg" alt="${destination.name} photo">`);
+            marker.addTo(map);
+        }
+            const routing = L.Routing.control({
+            waypoints: [center], 
+            router: L.Routing.OSRMv1,
+            routeStyle: { color: 'green' },
+            profile: 'hiking' 
+        }).addTo(map);
+      routing.on('routingstart', function () {
+            routing.options.profileSwitchControl = L.Routing.Control.profileSwitchControl({
+                position:'topright',
+                follow: true,
+                autoToggle: true,
+                enableRoute: true,
+                enableGeocoding: false,
+                reverseButton: true,
+                routeWhileDragging: false,
+                routeDragTimeout: 250,
+                draggableWaypoints: true,
+                show: true,
+                theme: 'leaflet-routing-machine',
+                profiles: [
+                    {
+                        name: 'Hiking',
+                        icon: 'C:/Users/Devashish Uniyal/OneDrive/Desktop/Project Programs/Best Tourist Spot/icons8-trekking-64.png', 
+                        callback: function () {
+                            routing.options.profile = 'hiking';
+                        }
+                    },
+                    {
+                        name: 'Cycling',
+                        icon: 'C:/Users/Devashish Uniyal/OneDrive/Desktop/Project Programs/Best Tourist Spot/icons8-cycling-50.png', 
+                        callback: function () {
+                            routing.options.profile = 'cycling';
+                        }
+                    }
+                ]
+            });
+            routing.options.profileSwitchControl.addTo(map);
+        });
+    </script>
+</body>
+</html>

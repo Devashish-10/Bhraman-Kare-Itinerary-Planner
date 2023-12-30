@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geocode Your Current Location</title>
+    <style>body{
+        font-family: sans-serif;
+    }
+    header{
+        background-color: #f0f0f0;
+    }
+    h1{
+        text-align: center;
+    }
+    form{
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+    label{
+        display: block;
+        margin-bottom: 5px;
+    }
+    label{
+        display: block;
+        margin-bottom: 5px;
+    }
+    input{
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+    button{
+        display: block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }</style>
+</head>
+<body>
+    
+    <form id="geocode-form">
+        <label for="location">Address</label><br>
+        <input type="text" name="location" id="location">
+        <button type="submit" > Geocode </button>
+        </form>
+        <div id="geocode-report"></div>   
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("geocode-form").addEventListener('submit', function (e) {
+    e.preventDefault();
+    var city = document.getElementById('location');
+    var geocodeReportElement=document.getElementById('geocode-report');
+    geocodeReportElement.innerHTML = 'City: '+city;
+    var options = {
+		method: 'GET',
+		headers: new Headers({
+			'X-RapidAPI-Key': '2935aee464mshdeec03e1b717674p1374e7jsn60313b40f0d1',
+			'X-RapidAPI-Host': 'trueway-geocoding.p.rapidapi.com'
+		})
+	};
+    fetch('https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=' + encodeURIComponent(city.value) + '&language=en', options)
+    .then(function (response) {
+		return response.json();
+    })
+    .then(function(response){
+        console.log(response);
+      if(response && response.error){
+        geocodeReportElement.innerHTML='<p>An Error Occured' +response.error.message+ '</p>';
+      }
+      else{
+        showGeocode(response,city,geocodeReportElement);
+      }
+    })
+    .catch(function(err){
+        console.error(err);
+        geocodeReportElement.innerHTML='<p> An Unknown Error Occured,Please Try Later';
+    });
+});
+    });
+    function showGeocode(response, city, geocodeReportElement) {
+    // Check if there are results in the array
+    if (response.results && response.results.length > 0) {
+        // Access the first result in the array
+        var firstResult = response.results[0];
+
+        var geoReport = `
+            <p>Address: ${city.value}</p>
+            <p>Postal Code: ${firstResult.postal_code || 'N/A'}</p>
+            <p>Country: ${firstResult.country || 'N/A'}</p>
+            <p>Region: ${firstResult.region || 'N/A'}</p>
+            <p>Area: ${firstResult.area || 'N/A'}</p>
+            <p>Locality: ${firstResult.locality || 'N/A'}</p>
+            <p>Neighborhood: ${firstResult.neighborhood || 'N/A'}</p>
+            <p>Street: ${firstResult.street || 'N/A'}</p>
+            <p>House: ${firstResult.house || 'N/A'}</p>
+            <p>Location Type: ${firstResult.location_type || 'N/A'}</p>
+            <p>Type: ${firstResult.type || 'N/A'}</p>
+        `;
+
+        geocodeReportElement.innerHTML = geoReport;
+    } else {
+        // Handle the case where there are no results
+        geocodeReportElement.innerHTML = '<p>No results found</p>';
+    }
+}
+    </script>
+</body>
+</html>
